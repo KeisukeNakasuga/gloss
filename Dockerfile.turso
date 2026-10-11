@@ -1,0 +1,13 @@
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl ca-certificates xz-utils \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sSfL https://get.tur.so/install.sh | bash \
+	&& mv /root/.turso/turso /usr/local/bin/turso \
+	&& rm -rf /root/.turso
+
+ENV HOME="/root/docker/volumes"
+
+ENTRYPOINT ["turso"]
