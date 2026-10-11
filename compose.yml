@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+  # docker compose run --rm turso-cli auth login --headless
+  # docker compose run --rm turso-cli config set token <token>
+  # docker compose run --rm turso-cli db create gloss
+  turso-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.turso
+    stdin_open: true
+    tty: true
+    volumes:
+      - turso-config:/root/docker/volumes/.turso
+
+volumes:
+  node_modules:
+  turso-config:
